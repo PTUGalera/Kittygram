@@ -9,5 +9,5 @@ cp .env.example .env
 
 # Если хочешь поменять пароль/секретный ключ — отредактируй .env
 
-# Запускаем
-docker compose up --build
+# Запускаем db
+make db
