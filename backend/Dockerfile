@@ -12,18 +12,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка Python-зависимостей
-COPY ./backend/requirements.txt .
+COPY ./requirements.txt .
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
-# Копируем проект
-COPY ./backend .
+# Копируем проект backend
+COPY . .
 
 # Сбор статики (выполнится при старте через entrypoint)
 RUN mkdir -p /app/static /app/media
 
-# Копируем entrypoint
-COPY ./backend/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

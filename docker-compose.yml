@@ -2,28 +2,30 @@ version: '3'
 
 services:
   db:
-    image: postgres:13
+    image: postgres:15
     volumes:
       - pg_data:/var/lib/postgresql/data
     env_file:
       - ./.env
   
   backend:
-    build: ./backend/
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
     env_file: .env
     image: kittygram_backend
     volumes:
       - static:/app/static/
       - media:/app/media/
-    env_file:
-      - ./.env
     depends_on:
       - db
   
   frontend:
     env_file: .env
     image: kittygram_frontend
-    build: ./frontend/
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
@@ -32,7 +34,9 @@ services:
   
   gateway:
     image: kittygram_gateway
-    build: ./nginx/
+    build:
+      context: ./nginx/
+      dockerfile: Dockerfile
     env_file: .env
     ports:
       - 9000:80
