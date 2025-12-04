@@ -1,23 +1,30 @@
-### Как запустить проект:
+# Kittygram Frontend
 
-Клонировать репозиторий и перейти в него в командной строке:
+Frontend приложение для Kittygram.
 
-```
-git clone https://github.com/yandex-praktikum/kittygram_frontend.git
-```
+## Установка зависимостей
 
-```
-cd kittygram_frontend
+```bash
+npm install
 ```
 
-Установить зависимости:
+## Запуск в режиме разработки
 
-```
-npm i
+```bash
+npm start
 ```
 
-Запустить проект:
+Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000)
 
+## Сборка для production
+
+```bash
+npm run build
 ```
-npm run start
+
+## Запуск тестов
+
+```bash
+npm test
 ```
+
