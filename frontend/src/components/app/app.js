@@ -5,15 +5,9 @@ import { Header } from "../header/header";
 import { Footer } from "../footer/footer";
 import { SignIn } from "../sign-in/sign-in";
 import { SignUp } from "../sign-up/sign-up";
+import { MainPage } from "../main-page/main-page";
 
 import styles from "./app.module.css";
-
-const HomePage = () => (
-  <section className={styles.content}>
-    <h1 className={styles.title}>Kittygram</h1>
-    <p className={styles.subtitle}>Базовый layout с Header и Footer</p>
-  </section>
-);
 
 const NotFound = () => (
   <section className={styles.content}>
@@ -29,7 +23,7 @@ function App() {
         <main className={styles.content}>
           <Switch>
             <Route exact path="/">
-              <HomePage />
+              <MainPage />
             </Route>
             <Route path="/signin">
               <SignIn />
