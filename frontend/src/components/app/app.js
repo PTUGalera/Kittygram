@@ -8,6 +8,7 @@ import { SignUp } from "../sign-up/sign-up";
 import { MainPage } from "../main-page/main-page";
 import { AddCardPage } from "../add-card-page/add-card-page";
 import { EditCardPage } from "../edit-card-page/edit-card-page";
+import { CatDetailPage } from "../cat-detail-page/cat-detail-page";
 
 import styles from "./app.module.css";
 
@@ -38,6 +39,9 @@ function App() {
             </Route>
             <Route path="/cats/:id/edit">
               <EditCardPage />
+            </Route>
+            <Route path="/cats/:id">
+              <CatDetailPage />
             </Route>
             <Route>
               <NotFound />

@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styles from "./card.module.css";
 
 // Функция для получения hex цвета по имени цвета
@@ -41,6 +42,8 @@ const needsDarkText = (hexColor) => {
 };
 
 export const Card = ({ cat }) => {
+  const history = useHistory();
+
   if (!cat) {
     return null;
   }
@@ -48,8 +51,12 @@ export const Card = ({ cat }) => {
   const colorHex = getColorHex(cat.color);
   const isLightColor = needsDarkText(colorHex);
 
+  const handleClick = () => {
+    history.push(`/cats/${cat.id}`);
+  };
+
   return (
-    <article className={styles.card}>
+    <article className={styles.card} onClick={handleClick} style={{ cursor: "pointer" }}>
       {cat.image_url ? (
         <img
           className={styles.image}

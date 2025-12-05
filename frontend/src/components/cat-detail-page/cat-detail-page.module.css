@@ -1,0 +1,211 @@
+.section {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 100px 60px;
+  position: relative;
+}
+
+.backArrow {
+  position: absolute;
+  left: 100px;
+  top: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #1c1c1c;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backArrow:hover {
+  color: #666;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #ececf0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 400px;
+  background: #f5f5f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholderText {
+  color: #999;
+  font-size: 16px;
+}
+
+.actions {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editButton,
+.deleteButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  color: #fff;
+}
+
+.editButton {
+  background: #ff8c00;
+}
+
+.editButton:hover {
+  background: #ff7a00;
+  transform: scale(1.05);
+}
+
+.deleteButton {
+  background: #e5484d;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: #d43d42;
+  transform: scale(1.05);
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.content {
+  padding: 24px;
+  text-align: center;
+}
+
+.name {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.year {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #666;
+}
+
+.colorTag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error {
+  color: #e5484d;
+}
+
+.backButton {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 24px;
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.backButton:hover {
+  background: #333;
+}
+
+@media screen and (max-width: 900px) {
+  .section {
+    padding: 40px 40px 60px;
+  }
+
+  .backArrow {
+    left: 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section {
+    padding: 32px 20px 40px;
+  }
+
+  .backArrow {
+    left: 20px;
+    top: 32px;
+  }
+
+  .card {
+    max-width: 100%;
+  }
+
+  .imagePlaceholder {
+    height: 300px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .section {
+    padding: 24px 14px 32px;
+  }
+
+  .backArrow {
+    left: 14px;
+    top: 24px;
+  }
+
+  .name {
+    font-size: 20px;
+  }
+}
+
