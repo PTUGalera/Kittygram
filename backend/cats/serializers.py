@@ -10,14 +10,11 @@ from .models import Achievement, AchievementCat, Cat
 
 class Hex2NameColor(serializers.Field):
     def to_representation(self, value):
-        return value
-
-    def to_internal_value(self, data):
+        # Преобразование hex в имя цвета для отображения
         try:
-            data = webcolors.hex_to_name(data)
+            return webcolors.hex_to_name(value)
         except ValueError:
             raise serializers.ValidationError("Для этого цвета нет имени")
-        return data
 
 
 class AchievementSerializer(serializers.ModelSerializer):

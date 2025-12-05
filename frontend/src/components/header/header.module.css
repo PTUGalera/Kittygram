@@ -2,9 +2,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 100px;
-  box-shadow: inset 0px -1px 0px var(--header-shadow);
+  width: 100%;
+  padding: 15px 0;
+  box-shadow: inset 0px -1px 0px #e2e2ea;
+}
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 0 100px;
 }
 
 .logo {
@@ -12,32 +22,137 @@
   height: 32px;
 }
 
-.btns_box {
-  display: flex;
+.logoLink {
+  display: inline-flex;
   align-items: center;
-  gap: 30px;
 }
 
-.hidden {
-  display: none;
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ff8c00;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.addButton:hover {
+  background: #ff7a00;
+}
+
+.addButton:active {
+  transform: translateY(1px);
+}
+
+.plusIcon {
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 300;
+}
+
+.logoutButton {
+  color: #1c1c1c;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #f2f2f5;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  font-weight: 500;
+  color: #1c1c1c;
+  padding: 6px 12px;
+  background-color: #f2f2f5;
+  border-radius: 8px;
+}
+
+.navLink {
+  color: #1c1c1c;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover {
+  background-color: #f2f2f5;
+}
+
+.navLinkActive {
+  background-color: #1c1c1c;
+  color: #fff;
 }
 
 @media screen and (max-width: 900px) {
-  .header {
-    padding: 15px 40px;
+  .headerContainer {
+    padding: 0 40px;
   }
 
-  .btns_box {
-    gap: 20px;
+  .addButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .addButton .plusIcon {
+    font-size: 18px;
   }
 }
 
 @media screen and (max-width: 540px) {
-  .header {
-    padding: 12px 14px;
+  .headerContainer {
+    padding: 0 14px;
   }
 
-  .btns_box {
-    gap: 10px;
+  .header {
+    padding: 12px 0;
+  }
+
+  .nav {
+    gap: 8px;
+  }
+
+  .addButton {
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .addButton .plusIcon {
+    font-size: 16px;
+  }
+
+  .navLink,
+  .logoutButton {
+    padding: 6px 8px;
+    font-size: 13px;
   }
 }
