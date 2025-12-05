@@ -6,8 +6,9 @@ from django.urls import include, path
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'cats', CatViewSet)
 router.register(r'achievements', AchievementViewSet)
+router.register(r'cats', CatViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,5 +18,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
+    urlpatterns += static(settings.MEDIA_URL,   
                           document_root=settings.MEDIA_ROOT)
