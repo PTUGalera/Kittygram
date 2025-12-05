@@ -1,7 +1,8 @@
 .section {
+  width: 100%;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 40px 40px 60px;
+  padding: 40px 100px 60px;
 }
 
 .title {
@@ -14,8 +15,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
   margin-bottom: 40px;
 }
 
@@ -38,6 +39,12 @@
   color: #856404;
 }
 
+
+@media screen and (max-width: 900px) {
+  .section {
+    padding: 32px 40px 40px;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .section {

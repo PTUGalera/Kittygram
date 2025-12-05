@@ -6,11 +6,14 @@ import { Footer } from "../footer/footer";
 import { SignIn } from "../sign-in/sign-in";
 import { SignUp } from "../sign-up/sign-up";
 import { MainPage } from "../main-page/main-page";
+import { AddCardPage } from "../add-card-page/add-card-page";
+import { EditCardPage } from "../edit-card-page/edit-card-page";
+import { CatDetailPage } from "../cat-detail-page/cat-detail-page";
 
 import styles from "./app.module.css";
 
 const NotFound = () => (
-  <section className={styles.content}>
+  <section style={{ padding: "40px", textAlign: "center" }}>
     <h2 className={styles.notFound}>Страница не найдена</h2>
   </section>
 );
@@ -30,6 +33,15 @@ function App() {
             </Route>
             <Route path="/signup">
               <SignUp />
+            </Route>
+            <Route path="/cats/add">
+              <AddCardPage />
+            </Route>
+            <Route path="/cats/:id/edit">
+              <EditCardPage />
+            </Route>
+            <Route path="/cats/:id">
+              <CatDetailPage />
             </Route>
             <Route>
               <NotFound />

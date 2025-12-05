@@ -38,47 +38,25 @@
 }
 
 .name {
-  margin: 0 0 12px;
-  font-size: 20px;
+  margin: 0 0 8px;
+  font-size: 18px;
   font-weight: 600;
   color: #1c1c1c;
 }
 
-.info {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+.year {
+  margin: 0 0 8px;
   font-size: 14px;
-}
-
-.label {
   color: #666;
-  font-weight: 500;
 }
 
-.value {
-  color: #1c1c1c;
-}
-
-.achievements {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #ececf0;
-}
-
-.achievementList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.achievement {
-  padding: 4px 10px;
-  background: #f5f5f7;
-  border-radius: 6px;
+.colorTag {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 12px;
-  color: #555;
+  font-weight: 500;
+  color: #ffffff;
 }
 
 @media screen and (max-width: 540px) {
