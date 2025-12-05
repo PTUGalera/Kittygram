@@ -1,13 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import styles from "./sign-in.module.css";
+import { URL } from "../../utils/constants";
 
 export const SignIn = () => {
   const [values, setValues] = React.useState({ username: "", password: "" });
   const [errors, setErrors] = React.useState({});
   const [submitted, setSubmitted] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const history = useHistory();
 
   const validate = (nextValues = values) => {
     const nextErrors = {};
@@ -29,14 +32,34 @@ export const SignIn = () => {
     }
   };
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setSubmitted(true);
     if (Object.keys(validationErrors).length === 0) {
-      // Здесь будет вызов API авторизации
-      console.log("Sign in with", values);
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${URL}/token/login/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+        
+        if (!response.ok) {
+          throw new Error("Неверные учетные данные");
+        }
+        
+        const data = await response.json();
+        localStorage.setItem("token", data.auth_token);
+        history.push("/");
+      } catch (error) {
+        setErrors({ general: error.message || "Ошибка авторизации" });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -51,6 +74,7 @@ export const SignIn = () => {
       <p className={styles.subtitle}>Войдите для доступа к Kittygram!</p>
       <div className={styles.card}>
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          {errors.general && <span className={styles.error}>{errors.general}</span>}
           <label className={styles.field}>
             <input
               className={`${styles.input} ${errors.username ? styles.inputError : ""
@@ -101,8 +125,8 @@ export const SignIn = () => {
             )}
           </label>
 
-          <button type="submit" className={styles.submit}>
-            Войти
+          <button type="submit" className={styles.submit} disabled={isLoading}>
+            {isLoading ? "Загрузка..." : "Войти"}
           </button>
         </form>
         <p className={styles.or}>или</p>
