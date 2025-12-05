@@ -15,10 +15,7 @@ class Hex2NameColor(serializers.Field):
         try:
             return webcolors.hex_to_name(value)
         except ValueError:
-            return value
-
-    def to_internal_value(self, data):
-        # Принимаем данные как есть (hex или имя цвета)
+            raise serializers.ValidationError("Для этого цвета нет имени")
         return data
 
 
@@ -65,14 +62,6 @@ class CatSerializer(serializers.ModelSerializer):
             "image_url",
         )
         read_only_fields = ("owner",)
-
-    def validate_color(self, value):
-        # Валидация цвета: должен быть в списке ALLOWED_COLORS
-        if not value.startswith("#") or value not in settings.ALLOWED_COLORS:
-            raise serializers.ValidationError(
-                "Цвет должен быть из списка разрешенных (шестнадцатеричный код)."
-            )
-        return value
 
     def get_image_url(self, obj):
         if obj.image:
