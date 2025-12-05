@@ -14,10 +14,11 @@ class Hex2NameColor(serializers.Field):
 
     def to_internal_value(self, data):
         try:
-            data = webcolors.hex_to_name(data)
+            # Пытаемся конвертировать hex в название цвета
+            return webcolors.hex_to_name(data)
         except ValueError:
-            raise serializers.ValidationError('Для этого цвета нет имени')
-        return data
+            # Если цвета нет в списке, просто сохраняем hex значение
+            return data
 
 
 class AchievementSerializer(serializers.ModelSerializer):

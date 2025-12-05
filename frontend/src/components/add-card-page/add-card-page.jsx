@@ -1,9 +1,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { fileToBase64, validateImageFile } from "../../utils/imageUtils";
+import { URL } from "../../utils/constants";
 import styles from "./add-card-page.module.css";
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 export const AddCardPage = () => {
   const history = useHistory();
@@ -121,7 +120,8 @@ export const AddCardPage = () => {
         payload.image = values.image;
       }
 
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("token");
+      
       const headers = {
         "Content-Type": "application/json",
       };
@@ -129,7 +129,7 @@ export const AddCardPage = () => {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/`, {
+      const response = await fetch(`${URL}/cats/`, {
         method: "POST",
         headers,
         body: JSON.stringify(payload),
@@ -137,8 +137,9 @@ export const AddCardPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error("Backend error:", errorData);
         throw new Error(
-          errorData.detail || errorData.message || "Не удалось добавить кота"
+          errorData.detail || errorData.message || JSON.stringify(errorData) || "Не удалось добавить кота"
         );
       }
 
