@@ -2,6 +2,12 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
