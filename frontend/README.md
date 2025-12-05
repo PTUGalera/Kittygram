@@ -1,23 +1,11 @@
-### Как запустить проект:
+# Kittygram frontend
 
-Клонировать репозиторий и перейти в него в командной строке:
+Шаблон React-приложения, собранный `create-react-app`.
 
-```
-git clone https://github.com/yandex-praktikum/kittygram_frontend.git
-```
+## Скрипты
 
-```
-cd kittygram_frontend
-```
+- `npm install` — установить зависимости
+- `npm start` — запустить dev-сервер
+- `npm test` — запустить тесты
+- `npm run build` — собрать production-бандл
 
-Установить зависимости:
-
-```
-npm i
-```
-
-Запустить проект:
-
-```
-npm run start
-```
