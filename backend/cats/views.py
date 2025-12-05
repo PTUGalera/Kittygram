@@ -6,8 +6,8 @@ from .serializers import AchievementSerializer, CatSerializer
 
 
 class CatViewSet(viewsets.ModelViewSet):
-    queryset = Cat.objects.all()
     serializer_class = CatSerializer
+    queryset = Cat.objects.all()
     pagination_class = PageNumberPagination
 
     def perform_create(self, serializer):
