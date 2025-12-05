@@ -12,7 +12,7 @@ import { EditCardPage } from "../edit-card-page/edit-card-page";
 import styles from "./app.module.css";
 
 const NotFound = () => (
-  <section className={styles.content}>
+  <section style={{ padding: "40px", textAlign: "center" }}>
     <h2 className={styles.notFound}>Страница не найдена</h2>
   </section>
 );

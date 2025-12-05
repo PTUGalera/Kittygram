@@ -1,10 +1,52 @@
 import React from "react";
 import styles from "./card.module.css";
 
+// Функция для получения hex цвета по имени цвета
+const getColorHex = (colorName) => {
+  const colorMap = {
+    black: "#000000",
+    white: "#ffffff",
+    whitesmoke: "#f5f5f5",
+    red: "#ff0000",
+    green: "#00ff00",
+    blue: "#0000ff",
+    yellow: "#ffff00",
+    orange: "#ffa500",
+    darkorange: "#ff8c00",
+    purple: "#800080",
+    pink: "#ffc0cb",
+    brown: "#a52a2a",
+    chocolate: "#d2691e",
+    burlywood: "#deb887",
+    grey: "#808080",
+    gray: "#808080",
+    чёрный: "#000000",
+    белый: "#ffffff",
+    рыжий: "#ff8c00",
+    серый: "#808080",
+  };
+  
+  const normalizedColor = colorName?.toLowerCase().trim();
+  return colorMap[normalizedColor] || "#808080"; // По умолчанию серый
+};
+
+// Функция для определения, нужен ли темный текст на светлом фоне
+const needsDarkText = (hexColor) => {
+  // Простая проверка яркости цвета
+  const r = parseInt(hexColor.slice(1, 3), 16);
+  const g = parseInt(hexColor.slice(3, 5), 16);
+  const b = parseInt(hexColor.slice(5, 7), 16);
+  const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+  return brightness > 180; // Если цвет светлый, нужен темный текст
+};
+
 export const Card = ({ cat }) => {
   if (!cat) {
     return null;
   }
+
+  const colorHex = getColorHex(cat.color);
+  const isLightColor = needsDarkText(colorHex);
 
   return (
     <article className={styles.card}>
@@ -21,26 +63,16 @@ export const Card = ({ cat }) => {
       )}
       <div className={styles.content}>
         <h3 className={styles.name}>{cat.name}</h3>
-        <div className={styles.info}>
-          <span className={styles.label}>Цвет:</span>
-          <span className={styles.value}>{cat.color}</span>
+        <div className={styles.year}>{cat.birth_year}</div>
+        <div
+          className={styles.colorTag}
+          style={{
+            backgroundColor: colorHex,
+            color: isLightColor ? "#1c1c1c" : "#ffffff",
+          }}
+        >
+          {cat.color}
         </div>
-        <div className={styles.info}>
-          <span className={styles.label}>Возраст:</span>
-          <span className={styles.value}>{cat.age} {cat.age === 1 ? 'год' : cat.age < 5 ? 'года' : 'лет'}</span>
-        </div>
-        {cat.achievements && cat.achievements.length > 0 && (
-          <div className={styles.achievements}>
-            <span className={styles.label}>Достижения:</span>
-            <div className={styles.achievementList}>
-              {cat.achievements.map((achievement) => (
-                <span key={achievement.id} className={styles.achievement}>
-                  {achievement.achievement_name}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </article>
   );

@@ -88,7 +88,7 @@ export const MainPage = () => {
 
   return (
     <section className={styles.section}>
-      <h1 className={styles.title}>Все коты</h1>
+      <h1 className={styles.title}>Замечательные коты</h1>
       {error && (
         <div className={styles.errorNotice}>
           Не удалось загрузить данные с сервера. Показаны тестовые данные.
