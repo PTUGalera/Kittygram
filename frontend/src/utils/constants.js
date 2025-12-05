@@ -1,4 +1,4 @@
-export const URL = "";
+export const URL = "/api";
 
 export const colorsList = [
   "#FFE4C4",

@@ -1,6 +1,16 @@
 #!/bin/sh
 set -e
 
+host="$DB_HOST"
+port="$DB_PORT"
+
+until nc -z "$host" "$port"; do
+  echo "Waiting for database..."
+  sleep 1
+done
+
+echo "Database is up!"
+
 echo "Применяем миграции..."
 python manage.py migrate --noinput
 
