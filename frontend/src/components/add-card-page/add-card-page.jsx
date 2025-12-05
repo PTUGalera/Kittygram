@@ -1,15 +1,30 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { fileToBase64, validateImageFile } from "../../utils/imageUtils";
+import { URL } from "../../utils/constants";
 import styles from "./add-card-page.module.css";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+// Список цветов должен соответствовать ALLOWED_COLORS в backend/kittygram_backend/settings.py
+const PRESET_COLORS = [
+  "#FFE4C4", // bisque (светло-кремовый)
+  "#DEB887", // burlywood (светло-коричневый)
+  "#FFA500", // orange (оранжевый)
+  "#FF8C00", // darkorange (темно-оранжевый)
+  "#D2691E", // chocolate (шоколадный)
+  "#8B4513", // saddlebrown (темно-коричневый)
+  "#FFFFFF", // white (белый)
+  "#F5F5F5", // whitesmoke (белый дым)
+  "#DCDCDC", // gainsboro (светло-серый)
+  "#A9A9A9", // darkgrey (темно-серый)
+  "#808080", // gray (серый)
+  "#000000", // black (черный)
+];
 
 export const AddCardPage = () => {
   const history = useHistory();
   const [values, setValues] = React.useState({
     name: "",
-    color: "#000000",
+    color: PRESET_COLORS[0],
     birth_year: new Date().getFullYear(),
     achievements: [],
     image: null,
@@ -112,8 +127,8 @@ export const AddCardPage = () => {
         achievements:
           values.achievements.length > 0
             ? values.achievements.map((a) => ({
-                achievement_name: a.achievement_name,
-              }))
+              achievement_name: a.achievement_name,
+            }))
             : [],
       };
 
@@ -121,7 +136,8 @@ export const AddCardPage = () => {
         payload.image = values.image;
       }
 
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("token");
+
       const headers = {
         "Content-Type": "application/json",
       };
@@ -129,7 +145,7 @@ export const AddCardPage = () => {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/`, {
+      const response = await fetch(`${URL}/cats/`, {
         method: "POST",
         headers,
         body: JSON.stringify(payload),
@@ -137,8 +153,9 @@ export const AddCardPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
+        console.error("Backend error:", errorData);
         throw new Error(
-          errorData.detail || errorData.message || "Не удалось добавить кота"
+          errorData.detail || errorData.message || JSON.stringify(errorData) || "Не удалось добавить кота"
         );
       }
 
@@ -158,9 +175,8 @@ export const AddCardPage = () => {
         <label className={styles.field}>
           <span className={styles.label}>Имя *</span>
           <input
-            className={`${styles.input} ${
-              errors.name ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.name ? styles.inputError : ""
+              }`}
             type="text"
             name="name"
             value={values.name}
@@ -172,37 +188,33 @@ export const AddCardPage = () => {
           {errors.name && <span className={styles.error}>{errors.name}</span>}
         </label>
 
-        <label className={styles.field}>
-          <span className={styles.label}>Цвет *</span>
-          <div className={styles.colorInputWrapper}>
-            <input
-              className={styles.colorPicker}
-              type="color"
-              name="color"
-              value={values.color}
-              onChange={handleChange}
-            />
-            <input
-              className={`${styles.input} ${
-                errors.color ? styles.inputError : ""
-              }`}
-              type="text"
-              value={values.color}
-              onChange={(e) =>
-                setValues({ ...values, color: e.target.value })
-              }
-              placeholder="#000000"
-            />
+        <div className={styles.field}>
+          <span className={styles.label}>Цвет кота:</span>
+          <div className={styles.colorGrid}>
+            {PRESET_COLORS.map((color) => (
+              <button
+                key={color}
+                type="button"
+                className={`${styles.colorSwatch} ${values.color === color ? styles.colorSwatchSelected : ""
+                  }`}
+                style={{ backgroundColor: color }}
+                onClick={() => setValues({ ...values, color })}
+                aria-label={`Выбрать цвет ${color}`}
+              />
+            ))}
+          </div>
+          <div className={styles.colorDisplay}>
+            <span className={styles.colorLabel}>Цвет кота:</span>
+            <span className={styles.colorValue}>{values.color}</span>
           </div>
           {errors.color && <span className={styles.error}>{errors.color}</span>}
-        </label>
+        </div>
 
         <label className={styles.field}>
           <span className={styles.label}>Год рождения *</span>
           <input
-            className={`${styles.input} ${
-              errors.birth_year ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.birth_year ? styles.inputError : ""
+              }`}
             type="number"
             name="birth_year"
             value={values.birth_year}

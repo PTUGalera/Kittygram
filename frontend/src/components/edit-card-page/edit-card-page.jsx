@@ -2,26 +2,60 @@ import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { fileToBase64, validateImageFile } from "../../utils/imageUtils";
 import styles from "./edit-card-page.module.css";
+import { URL } from "../../utils/constants";
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+// Список цветов должен соответствовать ALLOWED_COLORS в backend/kittygram_backend/settings.py
+const PRESET_COLORS = [
+  "#FFE4C4", // bisque (светло-кремовый)
+  "#DEB887", // burlywood (светло-коричневый)
+  "#FFA500", // orange (оранжевый)
+  "#FF8C00", // darkorange (темно-оранжевый)
+  "#D2691E", // chocolate (шоколадный)
+  "#8B4513", // saddlebrown (темно-коричневый)
+  "#FFFFFF", // white (белый)
+  "#F5F5F5", // whitesmoke (белый дым)
+  "#DCDCDC", // gainsboro (светло-серый)
+  "#A9A9A9", // darkgrey (темно-серый)
+  "#808080", // gray (серый)
+  "#000000", // black (черный)
+];
 
-// Функция для конвертации имени цвета в hex (простая реализация для основных цветов)
+// Функция для конвертации имени цвета в hex
+// Соответствует ALLOWED_COLORS в backend/kittygram_backend/settings.py
 const colorNameToHex = (colorName) => {
+  // Если уже hex формат, возвращаем как есть
+  if (colorName && colorName.startsWith('#')) {
+    return colorName.toUpperCase();
+  }
+  
   const colorMap = {
+    // Основные цвета из PRESET_COLORS
+    bisque: "#FFE4C4",
+    burlywood: "#DEB887",
+    orange: "#FFA500",
+    darkorange: "#FF8C00",
+    chocolate: "#D2691E",
+    saddlebrown: "#8B4513",
+    white: "#FFFFFF",
+    whitesmoke: "#F5F5F5",
+    gainsboro: "#DCDCDC",
+    darkgrey: "#A9A9A9",
+    darkgray: "#A9A9A9",
+    gray: "#808080",
+    grey: "#808080",
     black: "#000000",
-    white: "#ffffff",
+    // Дополнительные цвета
     red: "#ff0000",
     green: "#00ff00",
     blue: "#0000ff",
     yellow: "#ffff00",
-    orange: "#ffa500",
     purple: "#800080",
     pink: "#ffc0cb",
     brown: "#a52a2a",
-    grey: "#808080",
-    gray: "#808080",
   };
-  return colorMap[colorName?.toLowerCase()] || "#000000";
+  
+  const normalizedColor = colorName?.toLowerCase().trim();
+  return colorMap[normalizedColor] || PRESET_COLORS[0]; // По умолчанию первый цвет из списка
 };
 
 export const EditCardPage = () => {
@@ -48,18 +82,28 @@ export const EditCardPage = () => {
   const fetchCat = async () => {
     setLoadingData(true);
     try {
-      const token = localStorage.getItem("authToken");
-      const headers = {};
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
       if (token) {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/${id}/`, {
+      // URL уже включает /api, поэтому используем его напрямую
+      const response = await fetch(`${URL}/cats/${id}/`, {
+        method: "GET",
         headers,
       });
 
       if (!response.ok) {
-        throw new Error("Не удалось загрузить данные кота");
+        if (response.status === 401) {
+          throw new Error("Необходима авторизация. Пожалуйста, войдите в систему.");
+        } else if (response.status === 404) {
+          throw new Error("Кот не найден");
+        } else {
+          throw new Error(`Не удалось загрузить данные кота (код ошибки: ${response.status})`);
+        }
       }
 
       const data = await response.json();
@@ -76,8 +120,18 @@ export const EditCardPage = () => {
         achievements: achievementsWithId,
         image: null,
       });
+      // Обработка image_url - добавляем базовый URL если путь относительный
       if (data.image_url) {
-        setImagePreview(data.image_url);
+        const baseUrl = URL.replace('/api', '');
+        let imageUrl = data.image_url;
+        if (!imageUrl.startsWith('http') && !imageUrl.startsWith('//')) {
+          if (imageUrl.startsWith('/')) {
+            imageUrl = `${baseUrl}${imageUrl}`;
+          } else {
+            imageUrl = `${baseUrl}/${imageUrl}`;
+          }
+        }
+        setImagePreview(imageUrl);
       }
     } catch (err) {
       setErrors({ ...errors, fetch: err.message });
@@ -189,7 +243,7 @@ export const EditCardPage = () => {
         payload.image = values.image;
       }
 
-      const token = localStorage.getItem("authToken");
+      const token = localStorage.getItem("token");
       const headers = {
         "Content-Type": "application/json",
       };
@@ -197,7 +251,8 @@ export const EditCardPage = () => {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/${id}/`, {
+      // URL уже включает /api, поэтому используем его напрямую
+      const response = await fetch(`${URL}/cats/${id}/`, {
         method: "PATCH",
         headers,
         body: JSON.stringify(payload),
@@ -262,30 +317,28 @@ export const EditCardPage = () => {
           {errors.name && <span className={styles.error}>{errors.name}</span>}
         </label>
 
-        <label className={styles.field}>
-          <span className={styles.label}>Цвет *</span>
-          <div className={styles.colorInputWrapper}>
-            <input
-              className={styles.colorPicker}
-              type="color"
-              name="color"
-              value={values.color}
-              onChange={handleChange}
-            />
-            <input
-              className={`${styles.input} ${
-                errors.color ? styles.inputError : ""
-              }`}
-              type="text"
-              value={values.color}
-              onChange={(e) =>
-                setValues({ ...values, color: e.target.value })
-              }
-              placeholder="#000000"
-            />
+        <div className={styles.field}>
+          <span className={styles.label}>Цвет кота:</span>
+          <div className={styles.colorGrid}>
+            {PRESET_COLORS.map((color) => (
+              <button
+                key={color}
+                type="button"
+                className={`${styles.colorSwatch} ${
+                  values.color === color ? styles.colorSwatchSelected : ""
+                }`}
+                style={{ backgroundColor: color }}
+                onClick={() => setValues({ ...values, color })}
+                aria-label={`Выбрать цвет ${color}`}
+              />
+            ))}
+          </div>
+          <div className={styles.colorDisplay}>
+            <span className={styles.colorLabel}>Цвет кота:</span>
+            <span className={styles.colorValue}>{values.color}</span>
           </div>
           {errors.color && <span className={styles.error}>{errors.color}</span>}
-        </label>
+        </div>
 
         <label className={styles.field}>
           <span className={styles.label}>Год рождения *</span>

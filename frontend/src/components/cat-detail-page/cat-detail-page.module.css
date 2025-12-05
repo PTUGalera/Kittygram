@@ -133,6 +133,18 @@
   font-size: 12px;
   font-weight: 500;
   color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.achievements {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.achievement {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
 }
 
 .loading,

@@ -80,6 +80,20 @@
   background-color: #f2f2f5;
 }
 
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.username {
+  font-weight: 500;
+  color: #1c1c1c;
+  padding: 6px 12px;
+  background-color: #f2f2f5;
+  border-radius: 8px;
+}
+
 .navLink {
   color: #1c1c1c;
   text-decoration: none;
@@ -117,7 +131,7 @@
   .headerContainer {
     padding: 0 14px;
   }
-  
+
   .header {
     padding: 12px 0;
   }

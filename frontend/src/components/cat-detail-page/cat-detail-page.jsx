@@ -1,8 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styles from "./cat-detail-page.module.css";
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+import { URL } from "../../utils/constants";
 
 // Функция для получения hex цвета по имени цвета
 const getColorHex = (colorName) => {
@@ -58,21 +57,41 @@ export const CatDetailPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const token = localStorage.getItem("authToken");
-      const headers = {};
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
       if (token) {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/${id}/`, {
+      // URL уже включает /api, поэтому используем его напрямую
+      const response = await fetch(`${URL}/cats/${id}/`, {
+        method: "GET",
         headers,
       });
 
       if (!response.ok) {
-        throw new Error("Не удалось загрузить данные кота");
+        if (response.status === 401) {
+          throw new Error("Необходима авторизация. Пожалуйста, войдите в систему.");
+        } else if (response.status === 404) {
+          throw new Error("Кот не найден");
+        } else {
+          throw new Error(`Не удалось загрузить данные кота (код ошибки: ${response.status})`);
+        }
       }
 
       const data = await response.json();
+      // Обработка image_url - добавляем базовый URL если путь относительный
+      const baseUrl = URL.replace('/api', '');
+      if (data.image_url && !data.image_url.startsWith('http') && !data.image_url.startsWith('//')) {
+        // Если путь начинается с /, добавляем базовый URL, иначе добавляем /media/ или /api/
+        if (data.image_url.startsWith('/')) {
+          data.image_url = `${baseUrl}${data.image_url}`;
+        } else {
+          data.image_url = `${baseUrl}/${data.image_url}`;
+        }
+      }
       setCat(data);
     } catch (err) {
       setError(err.message);
@@ -89,19 +108,30 @@ export const CatDetailPage = () => {
 
     setDeleting(true);
     try {
-      const token = localStorage.getItem("authToken");
-      const headers = {};
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
       if (token) {
         headers.Authorization = `Token ${token}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/cats/${id}/`, {
+      // URL уже включает /api, поэтому используем его напрямую
+      const response = await fetch(`${URL}/cats/${id}/`, {
         method: "DELETE",
         headers,
       });
 
       if (!response.ok) {
-        throw new Error("Не удалось удалить кота");
+        if (response.status === 401) {
+          throw new Error("Необходима авторизация. Пожалуйста, войдите в систему.");
+        } else if (response.status === 403) {
+          throw new Error("У вас нет прав для удаления этого кота");
+        } else if (response.status === 404) {
+          throw new Error("Кот не найден");
+        } else {
+          throw new Error(`Не удалось удалить кота (код ошибки: ${response.status})`);
+        }
       }
 
       history.push("/");
@@ -243,6 +273,16 @@ export const CatDetailPage = () => {
           >
             {cat.color}
           </div>
+          {cat.achievements && cat.achievements.length > 0 && (
+            <div className={styles.achievements}>
+              {cat.achievements.map((achievement, index) => (
+                <span key={achievement.id || achievement.achievement_name || index} className={styles.achievement}>
+                  {achievement.achievement_name}
+                  {index < cat.achievements.length - 1 && ", "}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

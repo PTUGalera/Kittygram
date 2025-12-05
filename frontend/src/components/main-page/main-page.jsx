@@ -2,8 +2,7 @@ import React from "react";
 import { Card } from "../card/card";
 import { PaginationBox } from "../pagination-box/pagination-box";
 import styles from "./main-page.module.css";
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+import { URL } from "../../utils/constants";
 
 // Тестовые данные для демонстрации
 const TEST_CATS = [
@@ -55,7 +54,15 @@ export const MainPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/cats/?page=${page}`);
+      const token = localStorage.getItem("token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Token ${token}`;
+      }
+
+      const response = await fetch(`${URL}/cats/?page=${page}`, { headers });
       if (!response.ok) {
         throw new Error("Не удалось загрузить список котов");
       }
