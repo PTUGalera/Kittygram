@@ -89,19 +89,52 @@
   font-size: 12px;
 }
 
-.colorInputWrapper {
-  display: flex;
-  gap: 12px;
-  align-items: center;
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 8px;
 }
 
-.colorPicker {
-  width: 60px;
-  height: 44px;
-  border: 1px solid #d8d8df;
-  border-radius: 10px;
+.colorSwatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  border-radius: 8px;
   cursor: pointer;
-  padding: 2px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 0;
+  background: none;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.colorSwatchSelected {
+  border-color: #e5484d;
+  box-shadow: 0 0 0 2px rgba(229, 72, 77, 0.2);
+}
+
+.colorDisplay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 0;
+}
+
+.colorLabel {
+  font-size: 14px;
+  color: #333;
+}
+
+.colorValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c1c1c;
+  font-family: monospace;
 }
 
 .imageUpload {
@@ -323,14 +356,8 @@
     font-size: 22px;
   }
 
-  .colorInputWrapper {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .colorPicker {
-    width: 100%;
-    height: 50px;
+  .colorGrid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .achievementsInput {
