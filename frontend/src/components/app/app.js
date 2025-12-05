@@ -6,6 +6,8 @@ import { Footer } from "../footer/footer";
 import { SignIn } from "../sign-in/sign-in";
 import { SignUp } from "../sign-up/sign-up";
 import { MainPage } from "../main-page/main-page";
+import { AddCardPage } from "../add-card-page/add-card-page";
+import { EditCardPage } from "../edit-card-page/edit-card-page";
 
 import styles from "./app.module.css";
 
@@ -30,6 +32,12 @@ function App() {
             </Route>
             <Route path="/signup">
               <SignUp />
+            </Route>
+            <Route path="/cats/add">
+              <AddCardPage />
+            </Route>
+            <Route path="/cats/:id/edit">
+              <EditCardPage />
             </Route>
             <Route>
               <NotFound />
