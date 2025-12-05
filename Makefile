@@ -4,9 +4,8 @@ venv:
 	python3.10 -m venv .venv && . .venv/bin/activate && pip install -r backend/requirements.dev.txt
 
 format:
-	autoflake -r --in-place --remove-all-unused-imports ./
-	isort ./
-	black ./
+	ruff check --fix .
+	ruff format .
 
 # Копируем .env.example → .env (если .env ещё нет)
 copy-env:

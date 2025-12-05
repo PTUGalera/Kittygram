@@ -14,8 +14,7 @@ def _get_validated_link(
 ) -> str:
     _, path_to_deploy_info_file = deploy_file_info
     assert link_key in deploy_info_file_content, (
-        f"Убедитесь, что файл `{path_to_deploy_info_file}` содержит ключ "
-        f"`{link_key}`."
+        f"Убедитесь, что файл `{path_to_deploy_info_file}` содержит ключ `{link_key}`."
     )
     link: str = deploy_info_file_content[link_key]
     assert link.startswith("https"), (
@@ -65,7 +64,7 @@ def test_link_connection(
     cats_project_name = "Kittygram"
     taski_project_name = "Taski"
     assert_msg_template = (
-        f"Убедитесь, что по ссылке `{link}` доступен проект " "`{project_name}`."
+        f"Убедитесь, что по ссылке `{link}` доступен проект `{{project_name}}`."
     )
     if link_key == "kittygram_domain":
         assert cats_project_name in response.text, assert_msg_template.format(

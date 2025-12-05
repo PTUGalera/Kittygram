@@ -13,7 +13,7 @@ def test_infra_files_exist(
     action = "создан файл" if len(missing_files) < 2 else "созданы файлы"
     assert not missing_files, (
         f"Убедитесь, что в директории `{dir_name}/` {action} "
-        f'`{"`, `".join(missing_files)}`.'
+        f"`{'`, `'.join(missing_files)}`."
     )
 
 
@@ -32,9 +32,9 @@ def test_deploy_info_file_content(
     key_word_form = "ключ" if len(missing_content) < 2 else "ключи"
     assert not missing_content, (
         f"Убедитесь, что в файле `{relative_path}` {action} "
-        f'{", ".join(missing_content.values())}. Для вывода этой '
+        f"{', '.join(missing_content.values())}. Для вывода этой "
         f"информации необходимо использовать {key_word_form} "
-        f'`{"`, `".join(missing_content.keys())}`.'
+        f"`{'`, `'.join(missing_content.keys())}`."
     )
 
 
