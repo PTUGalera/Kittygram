@@ -1,4 +1,12 @@
-.PHONY: help install check-node check-npm dev dev-db dev-backend dev-frontend migrate superuser test clean
+.PHONY: venv configure
+
+venv:
+	python3.10 -m venv .venv && . .venv/bin/activate && pip install -r backend/requirements.dev.txt
+
+format:
+	autoflake -r --in-place --remove-all-unused-imports ./
+	isort ./
+	black ./
 
 # Копируем .env.example → .env (если .env ещё нет)
 copy-env:
