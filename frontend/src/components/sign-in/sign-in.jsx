@@ -47,11 +47,11 @@ export const SignIn = () => {
           },
           body: JSON.stringify(values),
         });
-        
+
         if (!response.ok) {
           throw new Error("Неверные учетные данные");
         }
-        
+
         const data = await response.json();
         localStorage.setItem("token", data.auth_token);
         history.push("/");

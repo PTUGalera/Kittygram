@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import styles from "./sign-up.module.css";
+import { URL } from "../../utils/constants";
 
 export const SignUp = () => {
   const [values, setValues] = React.useState({
@@ -13,6 +14,8 @@ export const SignUp = () => {
   const [submitted, setSubmitted] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const history = useHistory();
 
   const validate = (nextValues = values) => {
     const nextErrors = {};
@@ -37,14 +40,56 @@ export const SignUp = () => {
     }
   };
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setSubmitted(true);
     if (Object.keys(validationErrors).length === 0) {
-      // Здесь будет вызов API регистрации
-      console.log("Sign up with", values);
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${URL}/users/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: values.username,
+            password: values.password,
+          }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          if (data.username) {
+            setErrors({ username: "Пользователь с таким именем уже существует" });
+          } else {
+            throw new Error("Ошибка регистрации");
+          }
+        } else {
+          // После успешной регистрации автоматически авторизуемся
+          const loginResponse = await fetch(`${URL}/token/login/`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: values.username,
+              password: values.password,
+            }),
+          });
+
+          if (loginResponse.ok) {
+            const loginData = await loginResponse.json();
+            localStorage.setItem("token", loginData.auth_token);
+            history.push("/");
+          }
+        }
+      } catch (error) {
+        setErrors({ general: error.message || "Ошибка регистрации" });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -63,6 +108,7 @@ export const SignUp = () => {
       <p className={styles.subtitle}>Зарегистрируйтесь для доступа к Kittygram!</p>
       <div className={styles.card}>
         <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          {errors.general && <span className={styles.error}>{errors.general}</span>}
           <label className={styles.field}>
             <input
               className={`${styles.input} ${
@@ -156,8 +202,8 @@ export const SignUp = () => {
             Регистрируясь на нашем сайте, вы обещаете постить в сервис только котов, никаких собак.
           </p>
 
-          <button type="submit" className={styles.submit}>
-            Зарегистрироваться
+          <button type="submit" className={styles.submit} disabled={isLoading}>
+            {isLoading ? "Загрузка..." : "Зарегистрироваться"}
           </button>
         </form>
         <p className={styles.or}>или</p>
