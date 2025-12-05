@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Header } from "../header/header";
 import { Footer } from "../footer/footer";
+import { SignIn } from "../sign-in/sign-in";
+import { SignUp } from "../sign-up/sign-up";
 
 import styles from "./app.module.css";
 
@@ -28,6 +30,12 @@ function App() {
           <Switch>
             <Route exact path="/">
               <HomePage />
+            </Route>
+            <Route path="/signin">
+              <SignIn />
+            </Route>
+            <Route path="/signup">
+              <SignUp />
             </Route>
             <Route>
               <NotFound />
