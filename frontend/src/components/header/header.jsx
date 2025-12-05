@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 
 import logo from "../../images/logo.svg";
+import { URL } from "../../utils/constants";
 
 import styles from "./header.module.css";
 
@@ -16,15 +17,40 @@ export const Header = ({ extraClass = "" }) => {
   const location = useLocation();
   const isMainPage = location.pathname === "/";
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [username, setUsername] = React.useState("");
 
   React.useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    setIsAuthenticated(!!token);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+      // Получить данные пользователя
+      fetchUserData(token);
+    } else {
+      setIsAuthenticated(false);
+      setUsername("");
+    }
   }, [location.pathname]);
 
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch(`${URL}/users/me/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUsername(data.username);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
+    setUsername("");
     history.push("/");
   };
 
@@ -45,9 +71,12 @@ export const Header = ({ extraClass = "" }) => {
             </button>
           )}
           {isAuthenticated ? (
-            <button className={styles.logoutButton} onClick={handleLogout}>
-              Выйти
-            </button>
+            <div className={styles.userSection}>
+              <span className={styles.username}>{username}</span>
+              <button className={styles.logoutButton} onClick={handleLogout}>
+                Выход
+              </button>
+            </div>
           ) : (
             navLinks.map((link) => (
               <NavLink
