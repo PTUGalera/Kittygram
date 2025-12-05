@@ -201,6 +201,22 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+# Frontend
+/frontend/node_modules
+/frontend/build
+/frontend/coverage
+/frontend/.pnp
+/frontend/.pnp.cjs
+/frontend/.pnp.js
+/frontend/.DS_Store
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
 # Marimo
 marimo/_static/
 marimo/_lsp/
