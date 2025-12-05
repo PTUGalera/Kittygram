@@ -2,7 +2,6 @@ import base64
 import datetime as dt
 
 import webcolors
-from django.conf import settings
 from django.core.files.base import ContentFile
 from rest_framework import serializers
 
@@ -16,7 +15,6 @@ class Hex2NameColor(serializers.Field):
             return webcolors.hex_to_name(value)
         except ValueError:
             raise serializers.ValidationError("Для этого цвета нет имени")
-        return data
 
 
 class AchievementSerializer(serializers.ModelSerializer):
