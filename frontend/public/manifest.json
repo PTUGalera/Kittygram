@@ -1,6 +1,6 @@
 {
-  "short_name": "Kittygram",
-  "name": "Kittygram Frontend",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
@@ -13,4 +13,3 @@
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
-
