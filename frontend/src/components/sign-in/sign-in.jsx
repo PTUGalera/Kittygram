@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import logo from "../../images/logo.svg";
 import styles from "./sign-in.module.css";
 import { URL } from "../../utils/constants";
@@ -11,6 +11,7 @@ export const SignIn = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const history = useHistory();
+  const location = useLocation();
 
   const validate = (nextValues = values) => {
     const nextErrors = {};
@@ -54,7 +55,9 @@ export const SignIn = () => {
 
         const data = await response.json();
         localStorage.setItem("token", data.auth_token);
-        history.push("/");
+        // Перенаправляем на страницу, с которой пришел пользователь, или на главную
+        const { from } = location.state || { from: { pathname: "/" } };
+        history.replace(from);
       } catch (error) {
         setErrors({ general: error.message || "Ошибка авторизации" });
       } finally {

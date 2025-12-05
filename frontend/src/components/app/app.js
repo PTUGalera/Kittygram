@@ -9,6 +9,7 @@ import { MainPage } from "../main-page/main-page";
 import { AddCardPage } from "../add-card-page/add-card-page";
 import { EditCardPage } from "../edit-card-page/edit-card-page";
 import { CatDetailPage } from "../cat-detail-page/cat-detail-page";
+import { ProtectedRoute } from "../protected-route/protected-route";
 
 import styles from "./app.module.css";
 
@@ -25,24 +26,24 @@ function App() {
         <Header />
         <main className={styles.content}>
           <Switch>
-            <Route exact path="/">
-              <MainPage />
-            </Route>
             <Route path="/signin">
               <SignIn />
             </Route>
             <Route path="/signup">
               <SignUp />
             </Route>
-            <Route path="/cats/add">
+            <ProtectedRoute exact path="/">
+              <MainPage />
+            </ProtectedRoute>
+            <ProtectedRoute path="/cats/add">
               <AddCardPage />
-            </Route>
-            <Route path="/cats/:id/edit">
+            </ProtectedRoute>
+            <ProtectedRoute path="/cats/:id/edit">
               <EditCardPage />
-            </Route>
-            <Route path="/cats/:id">
+            </ProtectedRoute>
+            <ProtectedRoute path="/cats/:id">
               <CatDetailPage />
-            </Route>
+            </ProtectedRoute>
             <Route>
               <NotFound />
             </Route>
