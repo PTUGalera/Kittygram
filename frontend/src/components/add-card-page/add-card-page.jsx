@@ -111,8 +111,8 @@ export const AddCardPage = () => {
         achievements:
           values.achievements.length > 0
             ? values.achievements.map((a) => ({
-                achievement_name: a.achievement_name,
-              }))
+              achievement_name: a.achievement_name,
+            }))
             : [],
       };
 
@@ -121,7 +121,7 @@ export const AddCardPage = () => {
       }
 
       const token = localStorage.getItem("token");
-      
+
       const headers = {
         "Content-Type": "application/json",
       };
@@ -159,9 +159,8 @@ export const AddCardPage = () => {
         <label className={styles.field}>
           <span className={styles.label}>Имя *</span>
           <input
-            className={`${styles.input} ${
-              errors.name ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.name ? styles.inputError : ""
+              }`}
             type="text"
             name="name"
             value={values.name}
@@ -184,9 +183,8 @@ export const AddCardPage = () => {
               onChange={handleChange}
             />
             <input
-              className={`${styles.input} ${
-                errors.color ? styles.inputError : ""
-              }`}
+              className={`${styles.input} ${errors.color ? styles.inputError : ""
+                }`}
               type="text"
               value={values.color}
               onChange={(e) =>
@@ -201,9 +199,8 @@ export const AddCardPage = () => {
         <label className={styles.field}>
           <span className={styles.label}>Год рождения *</span>
           <input
-            className={`${styles.input} ${
-              errors.birth_year ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.birth_year ? styles.inputError : ""
+              }`}
             type="number"
             name="birth_year"
             value={values.birth_year}

@@ -129,3 +129,18 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
 }
+
+ALLOWED_COLORS = [
+    "#FFE4C4",  # bisque
+    "#DEB887",  # burlywood
+    "#FFA500",  # orange
+    "#FF8C00",  # darkorange
+    "#D2691E",  # chocolate
+    "#8B4513",  # saddlebrown
+    "#FFFFFF",  # white
+    "#F5F5F5",  # whitesmoke
+    "#DCDCDC",  # gainsboro
+    "#A9A9A9",  # darkgrey
+    "#808080",  # gray
+    "#000000",  # black
+]

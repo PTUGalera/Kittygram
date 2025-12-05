@@ -61,7 +61,7 @@ export const MainPage = () => {
       if (token) {
         headers["Authorization"] = `Token ${token}`;
       }
-      
+
       const response = await fetch(`${URL}/cats/?page=${page}`, { headers });
       if (!response.ok) {
         throw new Error("Не удалось загрузить список котов");
