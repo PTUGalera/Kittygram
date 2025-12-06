@@ -41,9 +41,9 @@ function App() {
             <ProtectedRoute path="/cats/:id/edit">
               <EditCardPage />
             </ProtectedRoute>
-            <ProtectedRoute path="/cats/:id">
+            <Route path="/cats/:id">
               <CatDetailPage />
-            </ProtectedRoute>
+            </Route>
             <Route>
               <NotFound />
             </Route>

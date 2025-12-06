@@ -81,7 +81,7 @@ export const SignUp = () => {
 
           if (loginResponse.ok) {
             const loginData = await loginResponse.json();
-            localStorage.setItem("token", loginData.auth_token);
+            localStorage.setItem("auth_token", loginData.auth_token);
             history.push("/");
           }
         }

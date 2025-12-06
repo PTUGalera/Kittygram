@@ -6,7 +6,7 @@ import { Route, Redirect } from "react-router-dom";
  * Если пользователь не авторизован (нет токена), перенаправляет на страницу входа
  */
 export const ProtectedRoute = ({ children, ...rest }) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("auth_token");
 
   return (
     <Route
