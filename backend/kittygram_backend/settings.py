@@ -60,7 +60,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "kittygram_backend.wsgi.application"
 
 
-# База данных
+# # База данных
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
