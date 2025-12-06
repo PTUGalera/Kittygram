@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -60,7 +60,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "kittygram_backend.wsgi.application"
 
 
-# # База данных
+# База данных
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -109,7 +109,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATIC_URL = "/static/"
+STATIC_URL = "/backend_static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "/media/"
@@ -119,7 +119,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",

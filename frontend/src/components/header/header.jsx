@@ -1,58 +1,104 @@
 import React from "react";
-import { useLocation, NavLink } from "react-router-dom";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 
-import { UserContext } from "../../utils/context";
-import { logoutUser } from "../../utils/api";
-
-import loginIcon from "../../images/login.svg";
-import plusIcon from "../../images/plus.svg";
-import logoutIcon from "../../images/logout.svg";
 import logo from "../../images/logo.svg";
-
-import { ButtonHeader } from "../ui/button-header/button-header";
-import { ButtonSecondary } from "../ui/button-secondary/button-secondary";
+import { URL } from "../../utils/constants";
+import { logoutUser } from "../../utils/api";
 
 import styles from "./header.module.css";
 
-export const Header = ({ setQueryPage, extraClass = "" }) => {
-  const [user, setUser] = React.useContext(UserContext);
+const navLinks = [
+  { to: "/signin", label: "Вход" },
+  { to: "/signup", label: "Регистрация" },
+];
 
+export const Header = ({ extraClass = "" }) => {
+  const headerClassList = `${styles.header} ${extraClass}`;
+  const history = useHistory();
   const location = useLocation();
+  const isMainPage = location.pathname === "/";
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [username, setUsername] = React.useState("");
+
+  React.useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      setIsAuthenticated(true);
+      // Получить данные пользователя
+      fetchUserData(token);
+    } else {
+      setIsAuthenticated(false);
+      setUsername("");
+    }
+  }, [location.pathname]);
+
+  const fetchUserData = async (token) => {
+    try {
+      const response = await fetch(`${URL}/users/me/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUsername(data.username);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
 
   const handleLogout = () => {
-    logoutUser().then(() => {
-      setUser({ id: "" });
-      setQueryPage(1);
-    });
+    (async () => {
+      try {
+        await logoutUser();
+      } catch (err) {
+        // ignore logout errors, still clear local state
+      }
+      localStorage.removeItem("auth_token");
+      setIsAuthenticated(false);
+      setUsername("");
+      history.push("/signin");
+    })();
   };
-
-  const onMainPage = () => {
-    setQueryPage(1);
-  };
-
-  const headerClassList = `${styles.header} ${
-    (location.pathname === "/signin" || location.pathname === "/signup") &&
-    styles.hidden
-  } ${extraClass}`;
 
   return (
     <header className={headerClassList}>
-      <NavLink className={styles.nav} to="/" onClick={onMainPage}>
-        <img className={styles.logo} src={logo} alt="Логотип." />
-      </NavLink>
-      {!user.id ? (
-        <ButtonHeader to="/signin" text="Войти" icon={loginIcon} />
-      ) : (
-        <div className={styles.btns_box}>
-          <ButtonHeader
-            to="/cats/add"
-            text="Добавить кота"
-            icon={plusIcon}
-            isLogin={true}
-          />
-          <ButtonSecondary icon={logoutIcon} onClick={handleLogout} />
-        </div>
-      )}
+      <div className={styles.headerContainer}>
+        <NavLink className={styles.logoLink} to="/">
+          <img className={styles.logo} src={logo} alt="Логотип." />
+        </NavLink>
+        <nav className={styles.nav}>
+          {isMainPage && (
+            <button
+              className={styles.addButton}
+              onClick={() => history.push("/cats/add")}
+            >
+              <span className={styles.plusIcon}>+</span>
+              Добавить кота
+            </button>
+          )}
+          {isAuthenticated ? (
+            <div className={styles.userSection}>
+              <span className={styles.username}>{username}</span>
+              <button className={styles.logoutButton} onClick={handleLogout}>
+                Выход
+              </button>
+            </div>
+          ) : (
+            navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={styles.navLink}
+                activeClassName={styles.navLinkActive}
+              >
+                {link.label}
+              </NavLink>
+            ))
+          )}
+        </nav>
+      </div>
     </header>
   );
 };
