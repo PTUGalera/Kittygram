@@ -16,6 +16,13 @@ class Hex2NameColor(serializers.Field):
         except ValueError:
             raise serializers.ValidationError("Для этого цвета нет имени")
 
+    def to_internal_value(self, data):
+        # Преобразование имени цвета в hex для сохранения
+        try:
+            return webcolors.name_to_hex(data)
+        except ValueError:
+            raise serializers.ValidationError("Неверное имя цвета")
+
 
 class AchievementSerializer(serializers.ModelSerializer):
     achievement_name = serializers.CharField(source="name")

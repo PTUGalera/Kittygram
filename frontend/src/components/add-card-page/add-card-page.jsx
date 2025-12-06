@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { fileToBase64, validateImageFile } from "../../utils/imageUtils";
-import { URL } from "../../utils/constants";
+import { URL, hexToColorName } from "../../utils/constants";
 import styles from "./add-card-page.module.css";
 
 // Список цветов должен соответствовать ALLOWED_COLORS в backend/kittygram_backend/settings.py
@@ -122,7 +122,7 @@ export const AddCardPage = () => {
     try {
       const payload = {
         name: values.name.trim(),
-        color: values.color,
+        color: hexToColorName(values.color) || values.color,
         birth_year: parseInt(values.birth_year),
         achievements:
           values.achievements.length > 0
@@ -136,7 +136,7 @@ export const AddCardPage = () => {
         payload.image = values.image;
       }
 
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("auth_token");
 
       const headers = {
         "Content-Type": "application/json",

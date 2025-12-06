@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { fileToBase64, validateImageFile } from "../../utils/imageUtils";
 import styles from "./edit-card-page.module.css";
-import { URL } from "../../utils/constants";
+import { URL, hexToColorName } from "../../utils/constants";
 
 // Список цветов должен соответствовать ALLOWED_COLORS в backend/kittygram_backend/settings.py
 const PRESET_COLORS = [
@@ -27,7 +27,7 @@ const colorNameToHex = (colorName) => {
   if (colorName && colorName.startsWith('#')) {
     return colorName.toUpperCase();
   }
-  
+
   const colorMap = {
     // Основные цвета из PRESET_COLORS
     bisque: "#FFE4C4",
@@ -53,7 +53,7 @@ const colorNameToHex = (colorName) => {
     pink: "#ffc0cb",
     brown: "#a52a2a",
   };
-  
+
   const normalizedColor = colorName?.toLowerCase().trim();
   return colorMap[normalizedColor] || PRESET_COLORS[0]; // По умолчанию первый цвет из списка
 };
@@ -82,7 +82,7 @@ export const EditCardPage = () => {
   const fetchCat = async () => {
     setLoadingData(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("auth_token");
       const headers = {
         "Content-Type": "application/json",
       };
@@ -229,13 +229,13 @@ export const EditCardPage = () => {
     try {
       const payload = {
         name: values.name.trim(),
-        color: values.color,
+        color: hexToColorName(values.color) || values.color,
         birth_year: parseInt(values.birth_year),
         achievements:
           values.achievements.length > 0
             ? values.achievements.map((a) => ({
-                achievement_name: a.achievement_name,
-              }))
+              achievement_name: a.achievement_name,
+            }))
             : [],
       };
 
@@ -243,7 +243,7 @@ export const EditCardPage = () => {
         payload.image = values.image;
       }
 
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("auth_token");
       const headers = {
         "Content-Type": "application/json",
       };
@@ -303,9 +303,8 @@ export const EditCardPage = () => {
         <label className={styles.field}>
           <span className={styles.label}>Имя *</span>
           <input
-            className={`${styles.input} ${
-              errors.name ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.name ? styles.inputError : ""
+              }`}
             type="text"
             name="name"
             value={values.name}
@@ -324,9 +323,8 @@ export const EditCardPage = () => {
               <button
                 key={color}
                 type="button"
-                className={`${styles.colorSwatch} ${
-                  values.color === color ? styles.colorSwatchSelected : ""
-                }`}
+                className={`${styles.colorSwatch} ${values.color === color ? styles.colorSwatchSelected : ""
+                  }`}
                 style={{ backgroundColor: color }}
                 onClick={() => setValues({ ...values, color })}
                 aria-label={`Выбрать цвет ${color}`}
@@ -343,9 +341,8 @@ export const EditCardPage = () => {
         <label className={styles.field}>
           <span className={styles.label}>Год рождения *</span>
           <input
-            className={`${styles.input} ${
-              errors.birth_year ? styles.inputError : ""
-            }`}
+            className={`${styles.input} ${errors.birth_year ? styles.inputError : ""
+              }`}
             type="number"
             name="birth_year"
             value={values.birth_year}

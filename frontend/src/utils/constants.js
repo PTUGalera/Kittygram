@@ -30,6 +30,17 @@ export const colorsNames = {
     "black": "#000000",
 };
 
+// Обратное преобразование: hex → имя цвета
+export const hexToColorName = (hexColor) => {
+    const hex = hexColor.toUpperCase();
+    for (const [name, color] of Object.entries(colorsNames)) {
+        if (color.toUpperCase() === hex) {
+            return name;
+        }
+    }
+    return null;
+};
+
 export const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

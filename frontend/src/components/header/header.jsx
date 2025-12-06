@@ -3,6 +3,7 @@ import { NavLink, useHistory, useLocation } from "react-router-dom";
 
 import logo from "../../images/logo.svg";
 import { URL } from "../../utils/constants";
+import { logoutUser } from "../../utils/api";
 
 import styles from "./header.module.css";
 
@@ -20,7 +21,7 @@ export const Header = ({ extraClass = "" }) => {
   const [username, setUsername] = React.useState("");
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("auth_token");
     if (token) {
       setIsAuthenticated(true);
       // Получить данные пользователя
@@ -48,10 +49,17 @@ export const Header = ({ extraClass = "" }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    setUsername("");
-    history.push("/");
+    (async () => {
+      try {
+        await logoutUser();
+      } catch (err) {
+        // ignore logout errors, still clear local state
+      }
+      localStorage.removeItem("auth_token");
+      setIsAuthenticated(false);
+      setUsername("");
+      history.push("/signin");
+    })();
   };
 
   return (

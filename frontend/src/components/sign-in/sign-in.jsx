@@ -54,7 +54,7 @@ export const SignIn = () => {
         }
 
         const data = await response.json();
-        localStorage.setItem("token", data.auth_token);
+        localStorage.setItem("auth_token", data.auth_token);
         // Перенаправляем на страницу, с которой пришел пользователь, или на главную
         const { from } = location.state || { from: { pathname: "/" } };
         history.replace(from);

@@ -19,6 +19,9 @@ class Cat(models.Model):
     achievements = models.ManyToManyField(Achievement, through="AchievementCat")
     image = models.ImageField(upload_to="cats/images/", null=True, default=None)
 
+    class Meta:
+        ordering = ("name",)
+
     def __str__(self):
         return self.name
 
