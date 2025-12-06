@@ -1,73 +1,126 @@
 import React from "react";
-
-import { getCards } from "../../utils/api";
-
-import { MainCard } from "../main-card/main-card";
+import { Card } from "../card/card";
 import { PaginationBox } from "../pagination-box/pagination-box";
-
 import styles from "./main-page.module.css";
+import { URL } from "../../utils/constants";
 
-export const MainPage = ({ queryPage, setQueryPage, extraClass = "" }) => {
-  const [cards, setCards] = React.useState([]);
-  const [pagData, setPagData] = React.useState({});
+// Тестовые данные для демонстрации
+const TEST_CATS = [
+  {
+    id: 1,
+    name: "Мурзик",
+    color: "чёрный",
+    birth_year: 2020,
+    age: 4,
+    achievements: [
+      { id: 1, achievement_name: "Ловец мышей" },
+      { id: 2, achievement_name: "Дружелюбный" },
+    ],
+    image_url: null,
+  },
+  {
+    id: 2,
+    name: "Барсик",
+    color: "рыжий",
+    birth_year: 2021,
+    age: 3,
+    achievements: [{ id: 3, achievement_name: "Игривый" }],
+    image_url: null,
+  },
+  {
+    id: 3,
+    name: "Васька",
+    color: "белый",
+    birth_year: 2019,
+    age: 5,
+    achievements: [],
+    image_url: null,
+  },
+];
+
+export const MainPage = () => {
+  const [cats, setCats] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
+  const [nextPage, setNextPage] = React.useState(null);
+  const [previousPage, setPreviousPage] = React.useState(null);
+  const [currentPage, setCurrentPage] = React.useState(1);
 
   React.useEffect(() => {
-    getCards(queryPage)
-      .then((res) => {
-        setPagData({
-          count: res.count,
-          pages: Math.ceil(res.count / 10),
-        });
-        setCards(res.results);
-      })
-      .catch((err) => {
-        if (err.detail === "Invalid page.") {
-          getCards(queryPage - 1)
-            .then((res) => {
-              setQueryPage(queryPage - 1);
-              setPagData({
-                count: res.count,
-                pages: Math.ceil(res.count / 10),
-              });
-              setCards(res.results);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
-        } else {
-          console.error(err);
-        }
-      });
-  }, [queryPage, setQueryPage]);
+    fetchCats(currentPage);
+  }, [currentPage]);
+
+  const fetchCats = async (page = 1) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const token = localStorage.getItem("auth_token");
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Token ${token}`;
+      }
+
+      const response = await fetch(`${URL}/cats/?page=${page}`, { headers });
+      if (!response.ok) {
+        throw new Error("Не удалось загрузить список котов");
+      }
+      const data = await response.json();
+      setCats(data.results || []);
+      setNextPage(data.next);
+      setPreviousPage(data.previous);
+    } catch (err) {
+      setError(err.message);
+      console.error("Ошибка загрузки котов:", err);
+      // Используем тестовые данные при ошибке загрузки
+      setCats(TEST_CATS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (loading) {
+    return (
+      <section className={styles.section}>
+        <div className={styles.loading}>Загрузка...</div>
+      </section>
+    );
+  }
 
   return (
-    <section className={`${styles.content} ${extraClass}`}>
-      <h2
-        className={`text text_type_h2 text_color_primary mt-25 mb-20 ${styles.title}`}
-      >
-        Замечательные коты
-      </h2>
-      <div className={styles.box}>
-        {cards.map((item, index) => {
-          return (
-            <MainCard
-              cardId={item.id}
-              key={index}
-              img={item.image_url}
-              name={item.name}
-              date={item.birth_year}
-              color={item.color}
+    <section className={styles.section}>
+      <h1 className={styles.title}>Замечательные коты</h1>
+      {error && (
+        <div className={styles.errorNotice}>
+          Не удалось загрузить данные с сервера. Показаны тестовые данные.
+        </div>
+      )}
+      {cats.length === 0 ? (
+        <div className={styles.empty}>Пока нет котов</div>
+      ) : (
+        <>
+          <div className={styles.grid}>
+            {cats.map((cat) => (
+              <Card key={cat.id} cat={cat} />
+            ))}
+          </div>
+          {!error && (
+            <PaginationBox
+              currentPage={currentPage}
+              hasNext={!!nextPage}
+              hasPrevious={!!previousPage}
+              onPageChange={handlePageChange}
             />
-          );
-        })}
-      </div>
-      {pagData.count > 10 && (
-        <PaginationBox
-          data={pagData}
-          queryPage={queryPage}
-          setQueryPage={setQueryPage}
-        />
+          )}
+        </>
       )}
     </section>
   );
 };
+

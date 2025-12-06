@@ -1,27 +1,19 @@
-FROM python:3.11-slim
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python:3.10-slim
 
 WORKDIR /app
 
-# Установка системных зависимостей
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
 
-# Установка Python-зависимостей
-COPY ./requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
 
-# Копируем проект backend
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt --no-cache-dir
+
+
 COPY . .
-
-# Сбор статики (выполнится при старте через entrypoint)
-RUN mkdir -p /app/static /app/media
-
+# COPY wait-for-db.sh /wait-for-db.sh
+# RUN chmod +x /wait-for-db.sh
+# RUN sh /wait-for-db.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
 ENTRYPOINT ["/entrypoint.sh"]

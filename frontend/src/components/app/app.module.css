@@ -1,15 +1,42 @@
 .app {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .content {
-  max-width: 1600px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0;
+  flex: 1;
+}
+
+.title {
+  margin: 32px 0 8px;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.subtitle {
+  margin: 0 0 32px;
+  font-size: 16px;
+  color: #666;
+}
+
+.notFound {
+  margin: 32px 0;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 @media screen and (max-width: 540px) {
   .content {
     padding: 0 14px;
+  }
+
+  .title {
+    font-size: 22px;
   }
 }

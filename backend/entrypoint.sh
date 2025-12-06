@@ -1,17 +1,21 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-# Ждём, пока БД поднимется
-until pg_isready -h $DB_HOST -p $DB_PORT -U $POSTGRES_USER; do
-  echo "Waiting for PostgreSQL..."
-  sleep 2
+host="$DB_HOST"
+port="$DB_PORT"
+
+until nc -z "$host" "$port"; do
+  echo "Waiting for database..."
+  sleep 1
 done
 
-echo "Applying migrations..."
-python manage.py migrate
+echo "Database is up!"
 
-echo "Collecting static files..."
+echo "Применяем миграции..."
+python manage.py migrate --noinput
+
+echo "Собираем статику..."
 python manage.py collectstatic --noinput
 
-echo "Starting Gunicorn..."
-gunicorn --bind 0.0.0.0:8000 kittygram.wsgi:application
+echo "Запускаем Gunicorn..."
+exec gunicorn --bind 0.0.0.0:8000 kittygram_backend.wsgi:application
