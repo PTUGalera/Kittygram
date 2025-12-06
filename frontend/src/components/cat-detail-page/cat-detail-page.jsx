@@ -200,7 +200,7 @@ export const CatDetailPage = () => {
             <div className={styles.imagePlaceholder}>
               <span className={styles.placeholderText}>Нет фото</span>
             </div>
-          )}>
+          )}
           {localStorage.getItem("auth_token") && (
             <div className={styles.actions}>
               <button
