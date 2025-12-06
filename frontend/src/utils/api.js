@@ -9,7 +9,7 @@ const checkResponse = (res) => {
 const headersWithContentType = { "Content-Type": "application/json" };
 
 export const registerUser = (username, password) => {
-  return fetch(`${URL}/api/users/`, {
+  return fetch(`${URL}/users/`, {
     method: "POST",
     headers: headersWithContentType,
     body: JSON.stringify({ username, password }),
@@ -17,7 +17,7 @@ export const registerUser = (username, password) => {
 };
 
 export const loginUser = (username, password) => {
-  return fetch(`${URL}/api/token/login/`, {
+  return fetch(`${URL}/token/login/`, {
     method: "POST",
     headers: headersWithContentType,
     body: JSON.stringify({ username, password }),
@@ -33,7 +33,7 @@ export const loginUser = (username, password) => {
 };
 
 export const logoutUser = () => {
-  return fetch(`${URL}/api/token/logout/`, {
+  return fetch(`${URL}/token/logout/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export const logoutUser = () => {
 };
 
 export const getUser = () => {
-  return fetch(`${URL}/api/users/me/`, {
+  return fetch(`${URL}/users/me/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export const getUser = () => {
 };
 
 export const getCards = (page = 1) => {
-  return fetch(`${URL}/api/cats/?page=${page}`, {
+  return fetch(`${URL}/cats/?page=${page}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export const getCards = (page = 1) => {
 };
 
 export const getCard = (id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+  return fetch(`${URL}/cats/${id}/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const getCard = (id) => {
 };
 
 export const getAchievements = () => {
-  return fetch(`${URL}/api/achievements/`, {
+  return fetch(`${URL}/achievements/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export const getAchievements = () => {
 };
 
 export const sendCard = (card) => {
-  return fetch(`${URL}/api/cats/`, {
+  return fetch(`${URL}/cats/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export const sendCard = (card) => {
 };
 
 export const updateCard = (card, id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+  return fetch(`${URL}/cats/${id}/`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -111,7 +111,7 @@ export const updateCard = (card, id) => {
 };
 
 export const deleteCard = (id) => {
-  return fetch(`${URL}/api/cats/${id}/`, {
+  return fetch(`${URL}/cats/${id}/`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
