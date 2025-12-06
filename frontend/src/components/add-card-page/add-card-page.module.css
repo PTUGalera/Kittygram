@@ -1,83 +1,319 @@
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: calc(100vh - 120px);
+.section {
+  max-width: 600px;
+  margin: 40px auto 60px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #ececf0;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.03);
 }
 
-.container {
-  position: relative;
-  border-radius: var(--button-border-radius);
-  box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.03),
-    0px 30px 24px rgba(119, 119, 119, 0.04),
-    0px 12px 10px rgba(119, 119, 119, 0.03),
-    0px 4px 3px rgba(119, 119, 119, 0.02);
+.title {
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  color: #1c1c1c;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.input {
   padding: 12px;
-  margin-bottom: 80px;
+  border: 1px solid #d8d8df;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-family: inherit;
 }
 
-.return_btn {
-  position: absolute;
-  top: 12px;
-  left: -70px;
+.input:focus {
+  outline: none;
+  border-color: #1c1c1c;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
 }
 
-.img_box {
-  width: 360px;
-  height: 280px;
-  background-color: #f0f0f0;
+.inputError {
+  border-color: #e5484d;
+  box-shadow: 0 0 0 2px rgba(229, 72, 77, 0.15);
+}
+
+.error {
+  color: #e5484d;
+  font-size: 12px;
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.colorSwatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 0;
+  background: none;
+}
+
+.colorSwatch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.colorSwatchSelected {
+  border-color: #e5484d;
+  box-shadow: 0 0 0 2px rgba(229, 72, 77, 0.2);
+}
+
+.colorDisplay {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 0;
+}
+
+.colorLabel {
+  font-size: 14px;
+  color: #333;
+}
+
+.colorValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1c1c1c;
+  font-family: monospace;
+}
+
+.imageUpload {
+  margin-top: 4px;
+}
+
+.imagePreview {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.imagePreview img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+}
+
+.removeImage {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.removeImage:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.fileInputLabel {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
+  padding: 40px 20px;
+  border: 2px dashed #d8d8df;
+  border-radius: 10px;
   cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.img {
-  margin-bottom: 20px;
+.fileInputLabel:hover {
+  border-color: #1c1c1c;
+  background: #f9f9f9;
 }
 
-.submit_btn {
-  width: 100%;
-}
-
-.return_btn_mobile {
+.fileInput {
   display: none;
 }
 
-.file_input {
-  display: none;
+.fileInputText {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
 }
 
-@media screen and (max-width: 600px) {
-  .return_btn_mobile {
-    display: block;
-    width: 100%;
-    max-width: 292px;
-    margin-top: 12px;
-    margin-bottom: 18px;
-  }
+.achievementsInput {
+  display: flex;
+  gap: 8px;
+}
 
-  .return_btn {
-    display: none;
-  }
+.achievementsInput .input {
+  flex: 1;
+}
+
+.addButton {
+  padding: 12px 20px;
+  background: #f5f5f7;
+  color: #1c1c1c;
+  border: 1px solid #d8d8df;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.addButton:hover {
+  background: #ececf0;
+  border-color: #1c1c1c;
+}
+
+.achievementsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.achievement {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #f5f5f7;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.removeAchievement {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.removeAchievement:hover {
+  color: #e5484d;
+}
+
+.submitError {
+  padding: 12px;
+  background: #ffe5e5;
+  border: 1px solid #e5484d;
+  border-radius: 8px;
+  color: #e5484d;
+  font-size: 14px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.cancelButton {
+  flex: 1;
+  padding: 12px;
+  background: #f5f5f7;
+  color: #1c1c1c;
+  border: 1px solid #d8d8df;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: #ececf0;
+  border-color: #1c1c1c;
+}
+
+.submit {
+  flex: 1;
+  padding: 12px;
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: #333;
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submit:disabled {
+  background: #999;
+  cursor: not-allowed;
 }
 
 @media screen and (max-width: 540px) {
-  .content {
-    min-height: calc(100vh - 114px);
+  .section {
+    margin: 24px 14px 40px;
+    padding: 20px;
   }
-}
 
-@media screen and (max-width: 430px) {
-  .content {
-    min-height: calc(100vh - 110px);
+  .title {
+    font-size: 22px;
   }
-}
 
-@media screen and (max-width: 412px) {
-  .img_box {
-    width: 268px;
+  .colorGrid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+
+  .achievementsInput {
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
   }
 }
