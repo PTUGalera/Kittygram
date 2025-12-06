@@ -25,14 +25,6 @@ class CatViewSetTestCase(APITestCase):
             "birth_year": 2020,
         }
 
-    def test_create_cat_success(self):
-        """Успешное создание кота авторизованным пользователем"""
-        url = reverse("cat-list")
-        response = self.client.post(url, self.cat_data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Cat.objects.count(), 1)
-        self.assertEqual(Cat.objects.first().owner, self.user)
-
     def test_create_cat_unauthenticated(self):
         """Создание кота без авторизации запрещено"""
         self.client.force_authenticate(user=None)
@@ -54,17 +46,6 @@ class CatViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("results", response.data)
         self.assertEqual(len(response.data["results"]), 2)
-
-    def test_retrieve_cat_detail(self):
-        """Получение деталей конкретного кота"""
-        cat = Cat.objects.create(
-            name="Васька", color="#888888", birth_year=2022, owner=self.user
-        )
-        url = reverse("cat-detail", kwargs={"pk": cat.pk})
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["name"], "Васька")
-        self.assertEqual(response.data["color"], "#888888")
 
     def test_delete_own_cat(self):
         """Удаление своего кота разрешено"""

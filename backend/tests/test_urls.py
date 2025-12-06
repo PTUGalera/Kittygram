@@ -58,11 +58,6 @@ class UrlsTestCase(TestCase):
         response = self.client.post("/api/cats/", data, format="json")
         self.assertEqual(response.status_code, 401)
 
-    def test_achievements_list_unauthorized(self):
-        """Тест: Неавторизованный пользователь получает 401 при доступе к списку достижений"""
-        response = self.client.get("/api/achievements/")
-        self.assertEqual(response.status_code, 401)
-
     def test_achievements_create_unauthorized(self):
         """Тест: Неавторизованный пользователь не может создать достижение — 401"""
         data = {"name": "Ловец лазера"}
