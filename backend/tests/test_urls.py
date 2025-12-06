@@ -7,13 +7,12 @@
 # User = get_user_model()
 
 
-
 # class UrlsTestCase(TestCase):
 #     def setUp(self):
 #         self.client = APIClient()
 #         self.user = User.objects.create_user(username="testuser", password="testpass")
 #         self.admin_user = User.objects.create_superuser(username="admin", password="adminpass")
-    
+
 #     def test_user_registration(self):
 #             """Тест: Регистрация нового пользователя возвращает 201"""
 #             data = {
@@ -23,7 +22,7 @@
 #             response = self.client.post("/api/users/", data, format="json")
 #             self.assertEqual(response.status_code, 201)
 #             self.assertIn("username", response.data)
-    
+
 #     def test_cats_list_authorized(self):
 #         """Тест: Авторизованный пользователь получает список котов с 200"""
 #         self.client.force_authenticate(user=self.user)
