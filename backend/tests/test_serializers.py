@@ -1,7 +1,6 @@
 import datetime as dt
 from django.test import TestCase
 
-# Импортируем модель User через get_user_model для надежности
 from django.contrib.auth import get_user_model
 from cats.models import Achievement, Cat
 from cats.serializers import CatSerializer
@@ -67,13 +66,11 @@ class CatSerializerTestCase(TestCase):
             "birth_year": 2022,
             "color": "red",
             "achievements": [
-                # ИСПОЛЬЗУЕМ КЛЮЧ achievement_name ВМЕСТО name
                 {"achievement_name": "Спать весь день"},
                 {"achievement_name": "Поймать мышку"},
             ],
         }
         serializer = CatSerializer(data=data)
-        # Добавляем msg=serializer.errors, чтобы видеть причину ошибки в консоли, если она возникнет
         self.assertTrue(serializer.is_valid(), msg=serializer.errors)
 
         cat = serializer.save(owner=self.user)
