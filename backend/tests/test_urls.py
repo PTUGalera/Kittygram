@@ -18,6 +18,7 @@ class UrlsTestCase(TestCase):
         """Тест: Регистрация нового пользователя возвращает 201"""
         data = {"username": "newuser", "password": "newpass123"}
         response = self.client.post("/api/users/", data, format="json")
+
         self.assertEqual(response.status_code, 201)
         self.assertIn("username", response.data)
 
